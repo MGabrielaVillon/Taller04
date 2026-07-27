@@ -1,17 +1,16 @@
-#define _POSIX_C_SOURCE 200112L
+//Integrantes
+//PINCAY SANABRIA JOAO PAULO
+//VILLEGAS PAZMIÑO LUIS GREGORIO
+//VILLON PALMA MARIA GABRIELA
+
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
 #include "usuario.h"
 #include "log.h"
 
 #define DEFAULT_USERS "usuarios.dat"
 #define DEFAULT_LOG "transacciones.log"
-
-//Joao Pincay
-//Luis Villegas
-//Maria Villon
 
 
 int main(int argc, char *argv[]) {
@@ -20,26 +19,21 @@ int main(int argc, char *argv[]) {
     char buffer_usuarios[256];
     char buffer_log[256];
     int flag_eliminar_log = 0;
-    int opt;
     int ingreso_u = 0;
     int ingreso_a = 0;
 
-    while ((opt = getopt(argc, argv, "u:a:n")) != -1) {
-        switch (opt) {
-            case 'u':
-                archivo_usuarios = optarg;
-                ingreso_u = 1;
-                break;
-            case 'a':
-                archivo_log = optarg;
-                ingreso_a = 1;
-                break;
-            case 'n':
-                flag_eliminar_log = 1;
-                break;
-            default:
-                fprintf(stderr, "Uso: %s [-u archivo_usuarios.dat] [-a archivo_auditoria.log] [-n]\n", argv[0]);
-                exit(EXIT_FAILURE);
+    for (int i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "-u") == 0 && i + 1 < argc) {
+            archivo_usuarios = argv[++i];
+            ingreso_u = 1;
+        } else if (strcmp(argv[i], "-a") == 0 && i + 1 < argc) {
+            archivo_log = argv[++i];
+            ingreso_a = 1;
+        } else if (strcmp(argv[i], "-n") == 0) {
+            flag_eliminar_log = 1;
+        } else {
+            fprintf(stderr, "Uso: %s [-u archivo_usuarios.dat] [-a archivo_auditoria.log] [-n]\n", argv[0]);
+            exit(EXIT_FAILURE);
         }
     }
 
